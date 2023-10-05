@@ -9,15 +9,18 @@ document.body.appendChild(renderer.domElement);
 
 //TEXTURE
 const width = 32, height = 32;
-const depthTexture = new THREE.DepthTexture(width, height);
+const depthRenderTarget = new THREE.WebGLRenderTarget(width, height);
+const depthTexture = new THREE.DepthTexture();
 depthTexture.type = THREE.UnsignedShortType;
+depthRenderTarget.depthTexture = depthTexture;
 depthTexture.format = THREE.DepthStencilFormat;
 depthTexture.needsUpdate = true;
 
 const geometry = new THREE.BoxGeometry(3,3,3);
 const material = new THREE.MeshDepthMaterial({
 	depthPacking: THREE.RGBADepthPacking,
-	map: depthTexture
+	depthMap: depthTexture,
+	depthMapType: THREE.UnsignedByteType
 });
 
 const cone = new THREE.Mesh(geometry, material);
